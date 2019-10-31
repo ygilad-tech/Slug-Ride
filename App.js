@@ -16,8 +16,11 @@ import {
   Alert,
 } from 'react-native';
 
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
+
 // TODO: Figure out how to center the buttons on the screen itself
-export default class LoginPage extends Component {
+class LoginPage extends Component {
   render() {
     return (
       <View>
@@ -39,6 +42,14 @@ export default class LoginPage extends Component {
     );
   }
 }
+
+const MainNavigator = createStackNavigator({
+  Login: {screen: LoginPage},
+});
+
+const App = createAppContainer(MainNavigator);
+
+export default App;
 
 const styles = StyleSheet.create({
   titleText: {
