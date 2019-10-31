@@ -1,11 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   View,
@@ -19,9 +11,12 @@ import {
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
+import LoginPage from './LoginPage';
+
 // TODO: Figure out how to center the buttons on the screen itself
-class LoginPage extends Component {
+class FirstPage extends Component {
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View>
         <View style={{alignItems: 'center', top: 50}}>
@@ -35,7 +30,7 @@ class LoginPage extends Component {
           <Text style={styles.baseText}> or </Text>
           <Button
             title="Login"
-            onPress={() => Alert.alert('Go to the login screen!')}
+            onPress={() => navigate('LoginPage')}
           />
         </View>
       </View>
@@ -44,7 +39,8 @@ class LoginPage extends Component {
 }
 
 const MainNavigator = createStackNavigator({
-  Login: {screen: LoginPage},
+  FirstPage: {screen: FirstPage},
+  LoginPage: {screen: LoginPage},
 });
 
 const App = createAppContainer(MainNavigator);
