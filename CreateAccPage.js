@@ -5,11 +5,11 @@ import {
     Button,
 } from 'react-native';
 
-export default class LoginPage extends Component {
+export default class CreateAccPage extends Component {
     render() {
         return (
             <View style={{alignItems: 'center', top: 50}}>
-                <Text>Enter your username and password below:</Text>
+                <Text>Create an account!</Text>
             </View>
         );
     }

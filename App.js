@@ -12,6 +12,7 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 
 import LoginPage from './LoginPage';
+import CreateAccPage from './CreateAccPage';
 
 // TODO: Figure out how to center the buttons on the screen itself
 class FirstPage extends Component {
@@ -25,7 +26,7 @@ class FirstPage extends Component {
         <View style={{justifyContent: 'space-between', alignItems: 'center', top: 200}}> 
           <Button
             title="Create an Account"
-            onPress={() => Alert.alert('Go to account creation screen!') }
+            onPress={() => navigate('CreateAccPage')}
           />
           <Text style={styles.baseText}> or </Text>
           <Button
@@ -41,6 +42,7 @@ class FirstPage extends Component {
 const MainNavigator = createStackNavigator({
   FirstPage: {screen: FirstPage},
   LoginPage: {screen: LoginPage},
+  CreateAccPage: {screen: CreateAccPage},
 });
 
 const App = createAppContainer(MainNavigator);
