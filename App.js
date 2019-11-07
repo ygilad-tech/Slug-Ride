@@ -6,6 +6,7 @@ import {
   Button,
   StyleSheet,
   Alert,
+  TextInput,
 } from 'react-native';
 
 import {createAppContainer} from 'react-navigation';
