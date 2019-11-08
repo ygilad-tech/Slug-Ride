@@ -23,13 +23,15 @@ export default class LoginPage extends Component {
             //</View>
             <View style = {{padding: 10}}>
 	            <TextInput 
-	           		style = {{height: 20}}
+					style = {{height: 20, paddingVertical: 0}}
+					underlineColorAndroid = "transparent"
 	           		placeholder = "Enter your UCSC email here"
 	           		onChangeText={(email) => this.setState({email})}
 	          		value={this.state.email}
 	           	/>
 	            <TextInput 
-	           		style = {{height: 20}}
+					style = {{height: 20, paddingVertical: 0}}
+					underlineColorAndroid = "transparent"
 	           		placeholder = "Enter your password here"
 	           		onChangeText={(pass) => this.setState({pass})}
 	          		value={this.state.pass}
