@@ -17,6 +17,7 @@ export default class LoginPage extends Component {
     	};
 	}
     render() {
+		const {navigate} = this.props.navigation; /* Allows navigation to other screens */
         return (
             //<View style={{alignItems: 'center', top: 50}}>
             //    <Text>Enter your email and password below:</Text>
@@ -38,7 +39,7 @@ export default class LoginPage extends Component {
 	           	/>
 	           	<Button 
 	            	title = "Done!"
-	            	onPress={() => Alert.alert('done')}
+	            	onPress={() => navigate('BrowseRidesPage')}
 	            />
 	        </View>
 	            
