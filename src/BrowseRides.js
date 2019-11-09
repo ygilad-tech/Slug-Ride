@@ -21,11 +21,16 @@ export default class BrowseRides extends Component {
 
     render() {
         return (
+            
             <View style={{padding: 10}}>
+                <View style={{alignItems: 'center', padding: 10}}>
+                    <Text style={styles.title}>Available Rides</Text>
+                </View>
+
                 <FlatList
                     data={EXAMPLE_RIDES}
                     renderItem={({item}) => 
-                        <RideEntry 
+                        <RideEntry
                             name={item.name}
                             licensePlate={item.licensePlate} 
                             location={item.location}  
@@ -60,7 +65,7 @@ class RideEntry extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <View style={styles.rideEntry}>
                 <Text>Driver Name: {this.props.name}</Text>
                 <Text>License Plate: {this.props.licensePlate}</Text>
                 <Text>Location: {this.props.location}</Text>
@@ -89,6 +94,17 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: '#d6d7da'
-    }
+    },
+    
+    rideEntry: {
+        backgroundColor: '#9AD2FB',
+        padding: 10,
+        marginVertical: 6,
+        marginHorizontal: 16,
+    },
+
+    title: {
+        fontSize: 32,
+    },
 });
 
