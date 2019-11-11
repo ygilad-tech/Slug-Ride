@@ -4,6 +4,8 @@ import {
     Text,
     FlatList,
     StyleSheet,
+    TouchableHighlight,
+    Alert,
 } from 'react-native';
 
 import PropTypes from 'prop-types'
@@ -63,14 +65,26 @@ function RideEntryData(name, licensePlate, location, pickupTime) {
 */
 class RideEntry extends Component {
 
+    onPress = () => {
+        // This occurs when a user taps a specific ride
+        var msg = "Signed up for " + this.props.name + "'s ride"
+        Alert.alert(msg)  
+    }
+
     render() {
         return (
-            <View style={styles.rideEntry}>
-                <Text>Driver Name: {this.props.name}</Text>
-                <Text>License Plate: {this.props.licensePlate}</Text>
-                <Text>Location: {this.props.location}</Text>
-                <Text>Pickup Time: {this.props.pickupTime}</Text>
-            </View>
+            <TouchableHighlight
+                onPress={this.onPress} 
+                style={styles.rideEntry}
+                underlayColor={'#0a93f5'}
+            >
+                <View>
+                    <Text>Driver Name: {this.props.name}</Text>
+                    <Text>License Plate: {this.props.licensePlate}</Text>
+                    <Text>Location: {this.props.location}</Text>
+                    <Text>Pickup Time: {this.props.pickupTime}</Text>
+                </View>
+            </TouchableHighlight>
         );
     }
 }
