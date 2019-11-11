@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     container: {
         borderRadius: 4,
         borderWidth: 0.5,
-        borderColor: '#d6d7da'
+        borderColor: '#d6d7da',
     },
     
     rideEntry: {
@@ -101,6 +101,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginVertical: 6,
         marginHorizontal: 16,
+        borderRadius: 10,
     },
 
     title: {
