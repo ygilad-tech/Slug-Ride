@@ -23,8 +23,9 @@ const EXAMPLE_RIDES = [
 export default class BrowseRides extends Component {
 
     render() {
+        const {navigate} = this.props.navigation
         return (
-            
+
             <View style={{padding: 10, flexDirection: 'column', flex: 1}}>
             
                 <View style={{alignItems: 'center', padding: 10, justifyContent: 'center'}}>
@@ -51,7 +52,7 @@ export default class BrowseRides extends Component {
                 <View style={styles.bottom}>
                     <Button
                         title="Create Ride"
-                        onPress={() => Alert.alert("Go to ride creation page!")}
+                        onPress={() => navigate('CreateRide')}
                     />
                 </View>
 
