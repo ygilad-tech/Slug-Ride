@@ -6,6 +6,7 @@ import {
     StyleSheet,
     TouchableHighlight,
     Alert,
+    Button,
 } from 'react-native';
 
 import PropTypes from 'prop-types'
@@ -24,22 +25,36 @@ export default class BrowseRides extends Component {
     render() {
         return (
             
-            <View style={{padding: 10}}>
-                <View style={{alignItems: 'center', padding: 10}}>
+            <View style={{padding: 10, flexDirection: 'column', flex: 1}}>
+            
+                <View style={{alignItems: 'center', padding: 10, justifyContent: 'center'}}>
                     <Text style={styles.title}>Available Rides</Text>
                 </View>
 
-                <FlatList
-                    data={EXAMPLE_RIDES}
-                    renderItem={({item}) => 
-                        <RideEntry
-                            name={item.name}
-                            licensePlate={item.licensePlate} 
-                            location={item.location}  
-                            pickupTime={item.pickupTime} 
-                        /> }
-                    keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
-                />
+                <View style={{justifyContent: 'center', flex: 6}}>
+                    <FlatList
+                        data={EXAMPLE_RIDES}
+                        renderItem={({item}) => 
+                            <RideEntry
+                                name={item.name}
+                                licensePlate={item.licensePlate} 
+                                location={item.location}  
+                                pickupTime={item.pickupTime} 
+                            /> }
+                        keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
+                        ListEmptyComponent={
+                            <Text style={{alignItems: 'center', justifyContent: 'center', padding: 10, fontSize: 15}} >No Rides Available</Text>
+                        }
+                    />
+                </View>
+
+                <View style={styles.bottom}>
+                    <Button
+                        title="Create Ride"
+                        onPress={() => Alert.alert("Go to ride creation page!")}
+                    />
+                </View>
+
             </View>
         );
     }
@@ -108,6 +123,7 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         borderWidth: 0.5,
         borderColor: '#d6d7da',
+        flex: 1,
     },
     
     rideEntry: {
@@ -121,5 +137,11 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
     },
+
+    bottom: {
+        flex: 1,
+        justifyContent: 'flex-end',
+        marginBottom: 30,
+    }, 
 });
 
