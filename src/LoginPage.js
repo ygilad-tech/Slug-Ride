@@ -18,6 +18,7 @@ export default class LoginPage extends Component {
     		pass: '',
     	};
 	}
+ HEAD
 	SignUp = (email, password) => {
     try {
       firebase.auth().createUserWithEmailAndPassword(email, password);
@@ -94,6 +95,34 @@ export default class LoginPage extends Component {
 	   //          	onPress={() => Alert.alert('done')}
 	   //          />
 	   //      </View>
+
+    render() {
+		const {navigate} = this.props.navigation; /* Allows navigation to other screens */
+        return (
+            //<View style={{alignItems: 'center', top: 50}}>
+            //    <Text>Enter your email and password below:</Text>
+            //</View>
+            <View style = {{padding: 10}}>
+	            <TextInput 
+					style = {{height: 20, paddingVertical: 0}}
+					underlineColorAndroid = "transparent"
+	           		placeholder = "Enter your UCSC email here"
+	           		onChangeText={(email) => this.setState({email})}
+	          		value={this.state.email}
+	           	/>
+	            <TextInput 
+					style = {{height: 20, paddingVertical: 0}}
+					underlineColorAndroid = "transparent"
+	           		placeholder = "Enter your password here"
+	           		onChangeText={(pass) => this.setState({pass})}
+	          		value={this.state.pass}
+	           	/>
+	           	<Button 
+	            	title = "Done!"
+	            	onPress={() => navigate('BrowseRidesPage')}
+	            />
+	        </View>
+ ec660b3dd476189230af54ffe6734fb9947e746d
 	            
             
     //         ///	<Text style={{padding: 10, fontSize: 42}}>
@@ -101,6 +130,7 @@ export default class LoginPage extends Component {
     //     	//	</Text>
 
             
+ HEAD
     //     );
     // }
 }
@@ -112,3 +142,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+        );
+    }
+}
+ ec660b3dd476189230af54ffe6734fb9947e746d

@@ -7,6 +7,8 @@ import {
     Alert,
 } from 'react-native';
 
+import App from './App';
+
 export default class CreateAccPage extends Component {
 
 	constructor(props) {
@@ -19,6 +21,7 @@ export default class CreateAccPage extends Component {
 	}
 
     render() {
+		const {navigate} = this.props.navigation; /* Allows navigation to other screens */
         return (
 
         	<View style={{padding: 10}}>
@@ -48,7 +51,7 @@ export default class CreateAccPage extends Component {
 
 	            	<Button 
 	            		title = "Create Account"
-	            		onPress={() => Alert.alert('done')}
+	            		onPress={() => navigate('BrowseRidesPage')}
 	            	/>
             </View>
 

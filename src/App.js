@@ -14,6 +14,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 
 import LoginPage from './LoginPage';
 import CreateAccPage from './CreateAccPage';
+import BrowseRides from './BrowseRides';
 
 // TODO: Figure out how to center the buttons on the screen itself
 class FirstPage extends Component {
@@ -44,6 +45,7 @@ const MainNavigator = createStackNavigator({
   FirstPage: {screen: FirstPage},
   LoginPage: {screen: LoginPage},
   CreateAccPage: {screen: CreateAccPage},
+  BrowseRidesPage: {screen: BrowseRides},
 });
 
 const App = createAppContainer(MainNavigator);
