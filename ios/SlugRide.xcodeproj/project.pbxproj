@@ -20,6 +20,7 @@
 		4A283C8C2D3479F63CFD242D /* libPods-SlugRideTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 685EE4D874FD089724959EB8 /* libPods-SlugRideTests.a */; };
 		731867AB9E5FCD306BC6B6F1 /* libPods-SlugRide-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FA80BA4183FD01EC4DAFAEB6 /* libPods-SlugRide-tvOS.a */; };
 		84BBA6D5BE59C281B4B58C21 /* libPods-SlugRide-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AA691DC1A46A6031A03ACC01 /* libPods-SlugRide-tvOSTests.a */; };
+		E29512FB237638AF008CECE9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E29512FA237638AF008CECE9 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +64,7 @@
 		AFB97D2D5875BEC81C47EEFE /* Pods-SlugRide.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SlugRide.debug.xcconfig"; path = "Target Support Files/Pods-SlugRide/Pods-SlugRide.debug.xcconfig"; sourceTree = "<group>"; };
 		BFD861C52C9A2596FF1BF94C /* Pods-SlugRide-tvOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SlugRide-tvOS.release.xcconfig"; path = "Target Support Files/Pods-SlugRide-tvOS/Pods-SlugRide-tvOS.release.xcconfig"; sourceTree = "<group>"; };
 		E0877D30A0FC4473C8339003 /* Pods-SlugRide-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SlugRide-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-SlugRide-tvOS/Pods-SlugRide-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
+		E29512FA237638AF008CECE9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		E8C46B22738E6CF81161815E /* Pods-SlugRide.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SlugRide.release.xcconfig"; path = "Target Support Files/Pods-SlugRide/Pods-SlugRide.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -125,6 +127,7 @@
 		13B07FAE1A68108700A75B9A /* SlugRide */ = {
 			isa = PBXGroup;
 			children = (
+				E29512FA237638AF008CECE9 /* GoogleService-Info.plist */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -194,7 +197,6 @@
 				427AB68B97F67688D819D4D4 /* Pods-SlugRideTests.debug.xcconfig */,
 				A2BA83D688846A702ECB20BD /* Pods-SlugRideTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -308,6 +310,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -338,6 +341,7 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				E29512FB237638AF008CECE9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

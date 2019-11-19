@@ -33,6 +33,12 @@ target 'SlugRide' do
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
   pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+  # Pods for Firebase
+  pod 'Firebase/Auth'
+  pod 'Firebase/Core', '~> 6.3.0'
+
+  pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
+  
 
   target 'SlugRideTests' do
     inherit! :search_paths
