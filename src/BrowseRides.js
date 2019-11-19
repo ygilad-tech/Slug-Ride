@@ -52,7 +52,7 @@ export default class BrowseRides extends Component {
                 <View style={styles.bottom}>
                     <Button
                         title="Create Ride"
-                        onPress={() => navigate('CreateRide')}
+                        onPress={() => navigate('CreateRidePage')}
                     />
                 </View>
 

@@ -47,7 +47,7 @@ const MainNavigator = createStackNavigator({
   LoginPage: {screen: LoginPage},
   CreateAccPage: {screen: CreateAccPage},
   BrowseRidesPage: {screen: BrowseRides},
-  CreateRide: {screen: CreateRide},
+  CreateRidePage: {screen: CreateRide},
 });
 
 const App = createAppContainer(MainNavigator);
