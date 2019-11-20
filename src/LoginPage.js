@@ -47,17 +47,23 @@ export default class LoginPage extends Component {
     }
   };
   SignIn = (email, pass) => {
-    try {
-      firebase.auth().signInWithEmailAndPassword(email, pass);
-      firebase.auth().onAuthStateChanged(user => {
-         alert("Hello " + user.email);
-      })
-    } catch (error) {
-      console.log(error.toString(error));
-    }
+      firebase.auth().signInWithEmailAndPassword(email, pass)
+        .then( user => { 
+          const {navigate} = this.props.navigation;
+          navigate('BrowseRidesPage')
+        }).catch(error => {
+          var errorCode = error.code
+          var errorMessage = error.message
+          if (errorCode === 'auth/wrong-password')
+            alert('Incorrect password')
+          else
+            alert(errorMessage)
+        });
+      //firebase.auth().onAuthStateChanged(user => {
+      //   alert("Hello " + user.email);
+      //})
   };
 	render() {
-		const {navigate} = this.props.navigation;
 		return (
 		  <Container style={styles.container}>
 		    <Form>
@@ -77,13 +83,14 @@ export default class LoginPage extends Component {
 		      </Item>
 		      <Button full rounded 
 		      style={{ marginTop: 20 }}
-		      onPress={() => {this.SignIn(this.state.email,
-		      this.state.pass); navigate('BrowseRidesPage')}}>
+		      onPress={() => {
+            this.SignIn(this.state.email, this.state.pass)
+          }}>
 		        <Text>Sign In</Text>
 		      </Button>
 		      <Button full rounded 
 		      style={{ marginTop: 20 }}
-		      onPress={() => this.SignUp(this.state.email,
+		      onPress={() => result = this.SignUp(this.state.email,
 		      this.state.pass)}>
 		        <Text>Sign Up</Text>
 		      </Button>
