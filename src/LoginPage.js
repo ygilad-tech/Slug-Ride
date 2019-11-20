@@ -9,6 +9,7 @@ import {
 import { Container, Item, Form, Input, Button, Label } from "native-base";
 import firebase from 'firebase';
 
+
 export default class LoginPage extends Component {
 
 	constructor(props) {
