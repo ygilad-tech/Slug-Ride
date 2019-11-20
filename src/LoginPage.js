@@ -33,9 +33,16 @@ export default class LoginPage extends Component {
     	};
 	}
   SignUp = (email, pass) => {
+    if (!email.endsWith(".edu")){
+      alert("use your .edu email!");
+      return;
+    }
     try {
       firebase.auth().createUserWithEmailAndPassword(email, pass);
-    } catch (error) {
+      firebase.auth().onAuthStateChanged(user => {
+         alert("Account Created!");
+      })
+   } catch (error) {
       console.log(error.toString(error));
     }
   };
