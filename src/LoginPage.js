@@ -32,16 +32,16 @@ export default class LoginPage extends Component {
     		pass: '',
     	};
 	}
-  SignUp = (email, password) => {
+  SignUp = (email, pass) => {
     try {
-      firebase.auth().createUserWithEmailAndPassword(email, password);
+      firebase.auth().createUserWithEmailAndPassword(email, pass);
     } catch (error) {
       console.log(error.toString(error));
     }
   };
-  SignIn = (email, password) => {
+  SignIn = (email, pass) => {
     try {
-      firebase.auth().signInWithEmailAndPassword(email, password);
+      firebase.auth().signInWithEmailAndPassword(email, pass);
       firebase.auth().onAuthStateChanged(user => {
          alert(user.email);
       })
@@ -70,13 +70,13 @@ export default class LoginPage extends Component {
           <Button full rounded 
           style={{ marginTop: 20 }}
           onPress={() => this.SignIn(this.state.email,
-          this.state.password)}>
+          this.state.pass)}>
             <Text>Sign In</Text>
           </Button>
           <Button full rounded 
           style={{ marginTop: 20 }}
           onPress={() => this.SignUp(this.state.email,
-          this.state.password)}>
+          this.state.pass)}>
             <Text>Sign Up</Text>
           </Button>
         </Form>
