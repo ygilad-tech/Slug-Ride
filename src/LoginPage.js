@@ -6,8 +6,22 @@ import {
     TextInput,
     Alert,
 } from 'react-native';
-import { Container, Item, Form, Input, Button, Label } from "native-base";
-import firebase from 'firebase';
+import { Container, Item, Form, Input, Button, Label} from "native-base";
+import * as firebase from 'firebase';
+
+var config = {
+  apiKey: "AIzaSyAKQst4A-9FrvXDz2IPSnWyufX5iehZcoc",
+  authDomain: "slugride-ff4c3.firebaseapp.com",
+  databaseURL: "https://slugride-ff4c3.firebaseio.com",
+  projectId: "slugride-ff4c3",
+  storageBucket: "slugride-ff4c3.appspot.com",
+  messagingSenderId: "481232900808",
+  appId: "1:481232900808:web:dfcecda79bc9dc93598bfd",
+  measurementId: "G-9C8ZTKRHX9"
+};
+
+firebase.initializeApp(config);
+
 
 export default class LoginPage extends Component {
 
@@ -18,7 +32,7 @@ export default class LoginPage extends Component {
     		pass: '',
     	};
 	}
-	SignUp = (email, password) => {
+  SignUp = (email, password) => {
     try {
       firebase.auth().createUserWithEmailAndPassword(email, password);
     } catch (error) {
@@ -27,7 +41,7 @@ export default class LoginPage extends Component {
   };
   SignIn = (email, password) => {
     try {
-      firebase.auth().signInUserWithEmailAndPassword(email, password);
+      firebase.auth().signInWithEmailAndPassword(email, password);
       firebase.auth().onAuthStateChanged(user => {
          alert(user.email);
       })
