@@ -83,7 +83,7 @@ export default class CreateRide extends Component {
                     <Button
                         title="Create Ride"
                         onPress={() => {
-                                db.collection('RidesList').doc("pls").set({
+                                db.collection('RidesList').doc().set({
                                     pickUpAddr: this.state.puAddy,
                                     pickUpTime: this.state.puTime,
                                     seatsAv: this.state.numSeats,
