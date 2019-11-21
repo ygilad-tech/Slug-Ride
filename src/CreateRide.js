@@ -18,7 +18,7 @@ export default class CreateRide extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dName: 'driver',
+            DriverName: '',
             puAddy: '',
             puTime: '',
             numSeats: '',
@@ -34,6 +34,16 @@ export default class CreateRide extends Component {
                 </View>
 
                 <View style={{top: 0, marginHorizontal: 30, marginVertical: 10}}>
+                    <View>
+                        <Text style={styles.textBoxTitle}>Your name</Text>
+                        <TextInput
+                            style={styles.textInputStyle}
+                            underlineColorAndroid = "transparent"
+                            placeholder = "Enter name Here"
+                            onChangeText={(DriverName) =>  this.setState({DriverName})}
+                            value = {this.state.DriverName}
+                        />
+                    </View>
                     <View>
                         <Text style={styles.textBoxTitle}>Location</Text>
                         <TextInput
@@ -76,7 +86,8 @@ export default class CreateRide extends Component {
                                 db.collection('RidesList').doc("pls").set({
                                     pickUpAddr: this.state.puAddy,
                                     pickUpTime: this.state.puTime,
-                                    seatsAv: this.state.numSeats
+                                    seatsAv: this.state.numSeats,
+                                    DriverName: this.state.DriverName
                                 })
                                 .then(() =>{
                                     navigate('BrowseRidesPage')
