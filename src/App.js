@@ -26,6 +26,7 @@ class FirstPage extends Component {
         <View style={{alignItems: 'center', top: 50}}>
           <Text style={styles.titleText}> SlugRide! </Text>
         </View>
+
         <View style={{justifyContent: 'space-between', alignItems: 'center', top: 200}}> 
           <Button
             title="Create an Account"

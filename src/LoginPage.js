@@ -7,6 +7,8 @@ import {
     Alert,
 } from 'react-native';
 import { Container, Item, Form, Input, Button, Label} from "native-base";
+import {firebaseApp } from './firebase';
+/*
 import * as firebase from 'firebase';
 
 var config = {
@@ -21,6 +23,7 @@ var config = {
 };
 
 firebase.initializeApp(config);
+*/
 
 
 export default class LoginPage extends Component {
@@ -37,9 +40,10 @@ export default class LoginPage extends Component {
       alert("use your .edu email!");
       return;
     }
+
     try {
-      firebase.auth().createUserWithEmailAndPassword(email, pass);
-      firebase.auth().onAuthStateChanged(user => {
+      firebaseApp.auth().createUserWithEmailAndPassword(email, pass);
+      firebaseApp.auth().onAuthStateChanged(user => {
          alert("Account Created!");
       })
    } catch (error) {
@@ -48,8 +52,8 @@ export default class LoginPage extends Component {
   };
   SignIn = (email, pass) => {
     try {
-      firebase.auth().signInWithEmailAndPassword(email, pass);
-      firebase.auth().onAuthStateChanged(user => {
+      firebaseApp.auth().signInWithEmailAndPassword(email, pass);
+      firebaseApp.auth().onAuthStateChanged(user => {
          alert("Hello " + user.email);
       })
     } catch (error) {

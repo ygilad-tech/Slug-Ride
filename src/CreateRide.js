@@ -8,11 +8,22 @@ import {
     Alert,
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
+import {db } from './firebase';
+
 
 // TODO: Add hooks for actually sending the data to firebase
 // TODO: Install and add a time-picker so you don't have to do it with a keyboard
 
 export default class CreateRide extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            dName: 'driver',
+            puAddy: '',
+            puTime: '',
+            numSeats: '',
+        };
+    }
 
     render() {
         const {navigate} = this.props.navigation
@@ -29,6 +40,7 @@ export default class CreateRide extends Component {
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Address of Pick-up Here"
+                            onChangeText={(addy) =>  this.state.puAddy({addy})}
                         />
                     </View>
 
@@ -38,6 +50,7 @@ export default class CreateRide extends Component {
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Pick-up Time Here"
+                            onChangeText={(time) =>  this.state.puTime({puTime})}
                         />
                     </View>
 
@@ -48,6 +61,7 @@ export default class CreateRide extends Component {
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Available Seats"
                             keyboardType = 'numeric'
+                            onChangeText={(numS) =>  this.state.numSeats({nums})}
                         />
                     </View>
                 </View>
@@ -56,8 +70,15 @@ export default class CreateRide extends Component {
                     <Button
                         title="Create Ride"
                         onPress={() => {
-                                navigate('BrowseRidesPage')
-                                Alert.alert('Ride has been created')
+                                db.collection('RidesList').doc("pls").set({
+                                    pickUpAddr: this.state.puAddy,
+                                    pickUpTime: this.state.puTime,
+                                    seatsAv: this.state.numSeats
+                                })
+                                .then(() =>{
+                                    navigate('BrowseRidesPage')
+                                    Alert.alert('Ride has been created')
+                                })
                             }
                         }
                     />

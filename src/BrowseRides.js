@@ -10,6 +10,8 @@ import {
 } from 'react-native';
 
 import PropTypes from 'prop-types'
+import { db } from './firebase';
+
 
 
 // List of example rides to be displayed for testing.
@@ -22,7 +24,30 @@ const EXAMPLE_RIDES = [
 
 export default class BrowseRides extends Component {
 
+    getFireData (){
+        var tempList = [];
+        db.collection('RidesList').get()
+        .then(function(querySnapshot){
+            querySnapshot.forEach(function(doc) {
+                fields = doc.data()
+                name = fields.DriverName
+                addr = fields.pickUpAddr
+                time = fields.pickUpTime
+                plate = fields.plateNum
+                seats = fields.seatsAv
+
+                entry = new RideEntryData(name, plate, addr, time)
+                console.log(entry)
+                tempList.push(entry)
+            })
+            return tempList
+        })
+        //console.log(tempList)
+        
+    }
+
     render() {
+
         const {navigate} = this.props.navigation
         return (
 
