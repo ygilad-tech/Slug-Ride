@@ -40,7 +40,8 @@ export default class CreateRide extends Component {
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Address of Pick-up Here"
-                            onChangeText={(addy) =>  this.state.puAddy({addy})}
+                            onChangeText={(puAddy) =>  this.setState({puAddy})}
+                            value = {this.state.puAddy}
                         />
                     </View>
 
@@ -50,7 +51,8 @@ export default class CreateRide extends Component {
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Pick-up Time Here"
-                            onChangeText={(time) =>  this.state.puTime({puTime})}
+                            onChangeText={(puTime) =>  this.setState({puTime})}
+                            value = {this.state.puTime}
                         />
                     </View>
 
@@ -61,7 +63,8 @@ export default class CreateRide extends Component {
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Available Seats"
                             keyboardType = 'numeric'
-                            onChangeText={(numS) =>  this.state.numSeats({nums})}
+                            onChangeText={(numSeats) =>  this.setState({numSeats})}
+                            value = {this.state.numSeats}
                         />
                     </View>
                 </View>
