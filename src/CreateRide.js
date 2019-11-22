@@ -8,11 +8,22 @@ import {
     Alert,
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
+import {db } from './firebase';
+
 
 // TODO: Add hooks for actually sending the data to firebase
 // TODO: Install and add a time-picker so you don't have to do it with a keyboard
 
 export default class CreateRide extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            DriverName: '',
+            puAddy: '',
+            puTime: '',
+            numSeats: '',
+        };
+    }
 
     render() {
         const {navigate} = this.props.navigation
@@ -24,11 +35,23 @@ export default class CreateRide extends Component {
 
                 <View style={{top: 0, marginHorizontal: 30, marginVertical: 10}}>
                     <View>
+                        <Text style={styles.textBoxTitle}>Your name</Text>
+                        <TextInput
+                            style={styles.textInputStyle}
+                            underlineColorAndroid = "transparent"
+                            placeholder = "Enter name Here"
+                            onChangeText={(DriverName) =>  this.setState({DriverName})}
+                            value = {this.state.DriverName}
+                        />
+                    </View>
+                    <View>
                         <Text style={styles.textBoxTitle}>Location</Text>
                         <TextInput
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Address of Pick-up Here"
+                            onChangeText={(puAddy) =>  this.setState({puAddy})}
+                            value = {this.state.puAddy}
                         />
                     </View>
 
@@ -38,6 +61,8 @@ export default class CreateRide extends Component {
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Pick-up Time Here"
+                            onChangeText={(puTime) =>  this.setState({puTime})}
+                            value = {this.state.puTime}
                         />
                     </View>
 
@@ -48,6 +73,8 @@ export default class CreateRide extends Component {
                             underlineColorAndroid = "transparent"
                             placeholder = "Enter Available Seats"
                             keyboardType = 'numeric'
+                            onChangeText={(numSeats) =>  this.setState({numSeats})}
+                            value = {this.state.numSeats}
                         />
                     </View>
                 </View>
@@ -56,8 +83,16 @@ export default class CreateRide extends Component {
                     <Button
                         title="Create Ride"
                         onPress={() => {
-                                navigate('BrowseRidesPage')
-                                Alert.alert('Ride has been created')
+                                db.collection('RidesList').doc().set({
+                                    pickUpAddr: this.state.puAddy,
+                                    pickUpTime: this.state.puTime,
+                                    seatsAv: this.state.numSeats,
+                                    DriverName: this.state.DriverName
+                                })
+                                .then(() =>{
+                                    navigate('BrowseRidesPage')
+                                    Alert.alert('Ride has been created')
+                                })
                             }
                         }
                     />

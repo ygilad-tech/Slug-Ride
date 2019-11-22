@@ -10,20 +10,54 @@ import {
 } from 'react-native';
 
 import PropTypes from 'prop-types'
+import { db } from './firebase';
+
 
 
 // List of example rides to be displayed for testing.
 // The data attribute of FlatList is what receives this list
 const EXAMPLE_RIDES = [
-    new RideEntryData("Bob Newbie", "6YAY616", "616 California St", "11:00"),
-    new RideEntryData("First Last", "1ABC234", "999 Address St", "12:00"),
-    new RideEntryData("Stoner Dude", "69NICE4", "Blaze It St", "4:20"),
+    new RideEntryData("Bob Newbie", "6YAY616", "616 California St", "11:00", "4"),
+    new RideEntryData("First Last", "1ABC234", "999 Address St", "12:00", "2"),
+    new RideEntryData("Stoner Dude", "69NICE4", "Blaze It St", "4:20", "5"),
 ]
 
 export default class BrowseRides extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            rides: [],
+        };
+    }
 
+    async getFireData (){
+        const markers = [];
+        await db.collection('RidesList').get()
+            .then(querySnapshot => {
+                querySnapshot.docs.forEach(doc => {
+                    d = doc.data();
+                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickupTime, d.seatsAv);
+                    //console.log(entry);
+                    //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
+                    //above link for making it check whether or not data exists already
+                    if (!this.state.rides.some(r => r.DriverName == d.DriverName)) {
+                        this.setState({
+                            rides: [...this.state.rides, entry]
+                        });
+                    }
+                    
+                    //markers.concat(entry);
+                    //console.log(markers.length);
+                    });
+            });
+            return;
+        }
     render() {
-        const {navigate} = this.props.navigation
+        var elems = [];
+        this.getFireData();
+        //console.log(elems[0]);
+
+        const {navigate} = this.props.navigation;
         return (
 
             <View style={{padding: 10, flexDirection: 'column', flex: 1}}>
@@ -34,13 +68,14 @@ export default class BrowseRides extends Component {
 
                 <View style={{justifyContent: 'center', flex: 6}}>
                     <FlatList
-                        data={EXAMPLE_RIDES}
+                        data={this.state.rides}
                         renderItem={({item}) => 
                             <RideEntry
-                                name={item.name}
-                                licensePlate={item.licensePlate} 
-                                location={item.location}  
-                                pickupTime={item.pickupTime} 
+                                DriverName={item.DriverName}
+                                plateNum={item.plateNum} 
+                                pickUpAddr={item.pickUpAddr}  
+                                pickUpTime={item.pickUpTime}
+                                seatsAv={item.seatsAv}
                             /> }
                         keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
                         ListEmptyComponent={
@@ -66,11 +101,12 @@ export default class BrowseRides extends Component {
  * passed to a RideEntry component to be displayed in the list. We'll 
  * probably get this info from the database, I imagine.
 */
-function RideEntryData(name, licensePlate, location, pickupTime) {
-    this.name = name;
-    this.licensePlate = licensePlate;
-    this.location = location;
-    this.pickupTime = pickupTime;
+function RideEntryData(DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv) {
+    this.DriverName = DriverName;
+    this.plateNum = plateNum;
+    this.pickUpAddr = pickUpAddr;
+    this.pickUpTime = pickUpTime;
+    this.seatsAv = seatsAv;
 }
 
 
@@ -95,10 +131,11 @@ class RideEntry extends Component {
                 underlayColor={'#0a93f5'}
             >
                 <View>
-                    <Text>Driver Name: {this.props.name}</Text>
-                    <Text>License Plate: {this.props.licensePlate}</Text>
-                    <Text>Location: {this.props.location}</Text>
-                    <Text>Pickup Time: {this.props.pickupTime}</Text>
+                    <Text>Driver Name: {this.props.DriverName}</Text>
+                    <Text>License Plate: {this.props.plateNum}</Text>
+                    <Text>Location: {this.props.pickUpAddr}</Text>
+                    <Text>Pickup Time: {this.props.pickUpTime}</Text>
+                    <Text>Seats Available: {this.props.seatsAv}</Text>
                 </View>
             </TouchableHighlight>
         );
@@ -110,6 +147,7 @@ RideEntry.propTypes = {
     licensePlate:   PropTypes.string,
     location:       PropTypes.string,
     pickupTime:     PropTypes.string,
+    seatsAv:        PropTypes.string,
 }
 
 RideEntry.defaultProps = {
@@ -117,6 +155,7 @@ RideEntry.defaultProps = {
     licensePlate:   "default license plate",
     location:       "default location",
     pickupTime:     "default pickup time",
+    seatsAvkey:     "0", 
 }
 
 const styles = StyleSheet.create({

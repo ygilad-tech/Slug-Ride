@@ -36,9 +36,10 @@ target 'SlugRide' do
   # Pods for Firebase
   pod 'Firebase/Auth'
   pod 'Firebase/Core', '~> 6.3.0'
+  pod 'Firebase/Firestore'
 
   pod 'RNFirebase', :path => '../node_modules/react-native-firebase/ios'
-  
+
 
   target 'SlugRideTests' do
     inherit! :search_paths
