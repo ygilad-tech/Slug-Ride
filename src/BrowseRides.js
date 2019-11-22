@@ -147,7 +147,7 @@ RideEntry.propTypes = {
     licensePlate:   PropTypes.string,
     location:       PropTypes.string,
     pickupTime:     PropTypes.string,
-    seatsAv:        PropTypes.string,
+    seatsAv:        PropTypes.number,
 }
 
 RideEntry.defaultProps = {
