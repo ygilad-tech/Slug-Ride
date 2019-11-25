@@ -36,7 +36,7 @@ export default class BrowseRides extends Component {
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     d = doc.data();
-                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickupTime, d.seatsAv);
+                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv);
                     //console.log(entry);
                     //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
                     //above link for making it check whether or not data exists already
@@ -75,7 +75,7 @@ export default class BrowseRides extends Component {
                                 plateNum={item.plateNum} 
                                 pickUpAddr={item.pickUpAddr}  
                                 pickUpTime={item.pickUpTime}
-                                seatsAv={item.seatsAv}
+                                seatsAv={Number(item.seatsAv)}
                             /> }
                         keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
                         ListEmptyComponent={
@@ -119,7 +119,7 @@ class RideEntry extends Component {
 
     onPress = () => {
         // This occurs when a user taps a specific ride
-        var msg = "Signed up for " + this.props.name + "'s ride"
+        var msg = "Signed up for " + this.props.DriverName + "'s ride"
         Alert.alert(msg)  
     }
 
