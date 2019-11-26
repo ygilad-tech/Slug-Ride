@@ -67,6 +67,10 @@ export default class BrowseRides extends Component {
             return;
         }
 
+    userTappedRide(rideUID) {
+        
+    }
+
     render() {
         var elems = [];
         this.getFireData();
@@ -86,11 +90,13 @@ export default class BrowseRides extends Component {
                         data={this.state.rides}
                         renderItem={({item}) => 
                             <RideEntry
+                                rideUID={item.rideUID}
                                 DriverName={item.DriverName}
                                 plateNum={item.plateNum} 
                                 pickUpAddr={item.pickUpAddr}  
                                 pickUpTime={item.pickUpTime}
                                 seatsAv={Number(item.seatsAv)}
+                                initialCarState={item.isInCar} // this is subject to change
                             /> }
                         keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
                         ListEmptyComponent={
@@ -116,13 +122,14 @@ export default class BrowseRides extends Component {
  * passed to a RideEntry component to be displayed in the list. We'll 
  * probably get this info from the database, I imagine.
 */
-function RideEntryData(DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv, userReservedSeat) {
+function RideEntryData(rideUID, DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv, isInCar) {
+    this.rideUID = rideUID;
     this.DriverName = DriverName;
     this.plateNum = plateNum;
     this.pickUpAddr = pickUpAddr;
     this.pickUpTime = pickUpTime;
     this.seatsAv = seatsAv;
-    this.userReservedSeat = userReservedSeat;
+    this.isInCar = isInCar;
 }
 
 
@@ -132,10 +139,28 @@ function RideEntryData(DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv, us
  * it and passing it around.
 */
 class RideEntry extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            isInCar: this.props.initialCarState,
+        };
+    }
 
     onPress = () => {
         // This occurs when a user taps a specific ride
-        var msg = "Signed up for " + this.props.DriverName + "'s ride"
+
+        var msg
+        if (this.state.isInCar){
+            msg = "You are no longer singed up for " + this.props.DriverName + "'s ride"
+        } else{
+            msg = "Signed up for " + this.props.DriverName + "'s ride"
+        }
+
+        this.setState((prevState) => ({
+                isInCar: !prevState.isInCar,
+            })
+        );
+
         Alert.alert(msg)  
     }
 
@@ -143,7 +168,10 @@ class RideEntry extends Component {
         return (
             <TouchableHighlight
                 onPress={this.onPress} 
-                style={styles.rideEntry}
+                style={[
+                    styles.rideEntry,
+                    this.state.isInCar ? {backgroundColor: '#0a93f5' } : {backgroundColor: '#9AD2FB'},
+                ]}
                 underlayColor={'#0a93f5'}
             >
                 <View>
@@ -158,20 +186,23 @@ class RideEntry extends Component {
     }
 }
 
+/*
 RideEntry.propTypes = {
-    name:           PropTypes.string,
+    DriverName:     PropTypes.string,
     licensePlate:   PropTypes.string,
     location:       PropTypes.string,
     pickupTime:     PropTypes.string,
     seatsAv:        PropTypes.number,
 }
+*/
 
 RideEntry.defaultProps = {
-    name:           "default name",
-    licensePlate:   "default license plate",
-    location:       "default location",
-    pickupTime:     "default pickup time",
-    seatsAvkey:     "0", 
+    DriverName:     "default name",
+    plateNum:   "default license plate",
+    pickUpAddr:       "default location",
+    pickUpTime:     "default pickup time",
+    seatsAv:     "0",
+    initialCarState: false,
 }
 
 const styles = StyleSheet.create({
@@ -183,7 +214,7 @@ const styles = StyleSheet.create({
     },
     
     rideEntry: {
-        backgroundColor: '#9AD2FB',
+        //backgroundColor: '#9AD2FB',
         padding: 10,
         marginVertical: 6,
         marginHorizontal: 16,
