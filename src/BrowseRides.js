@@ -10,16 +10,16 @@ import {
 } from 'react-native';
 
 import PropTypes from 'prop-types'
-import { db } from './firebase';
+import { db, firebaseApp } from './firebase';
 
 
 
 // List of example rides to be displayed for testing.
 // The data attribute of FlatList is what receives this list
 const EXAMPLE_RIDES = [
-    new RideEntryData("Bob Newbie", "6YAY616", "616 California St", "11:00", "4"),
-    new RideEntryData("First Last", "1ABC234", "999 Address St", "12:00", "2"),
-    new RideEntryData("Stoner Dude", "69NICE4", "Blaze It St", "4:20", "5"),
+    new RideEntryData("Bob Newbie", "6YAY616", "616 California St", "11:00", "4", false),
+    new RideEntryData("First Last", "1ABC234", "999 Address St", "12:00", "2", false),
+    new RideEntryData("Stoner Dude", "69NICE4", "Blaze It St", "4:20", "5", false),
 ]
 
 export default class BrowseRides extends Component {
@@ -35,8 +35,21 @@ export default class BrowseRides extends Component {
         await db.collection('RidesList').get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
-                    d = doc.data();
-                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv);
+                    var d = doc.data();
+                    
+                    var riders = d.inCar
+                    var isRider = false
+
+                    if (riders === undefined) {
+                        console.warn("BrowseRides warning: riders variable is undefined, so adding riders to it may fail. Document ID: " + doc.id)
+                    } else {
+                        riders.forEach(uid => {
+                            if (uid === firebaseApp.auth().currentUser.uid)
+                                isRider = true
+                        });
+                    }
+
+                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv, isRider);
                     //console.log(entry);
                     //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
                     //above link for making it check whether or not data exists already
@@ -52,6 +65,7 @@ export default class BrowseRides extends Component {
             });
             return;
         }
+
     render() {
         var elems = [];
         this.getFireData();
@@ -101,12 +115,13 @@ export default class BrowseRides extends Component {
  * passed to a RideEntry component to be displayed in the list. We'll 
  * probably get this info from the database, I imagine.
 */
-function RideEntryData(DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv) {
+function RideEntryData(DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv, userReservedSeat) {
     this.DriverName = DriverName;
     this.plateNum = plateNum;
     this.pickUpAddr = pickUpAddr;
     this.pickUpTime = pickUpTime;
     this.seatsAv = seatsAv;
+    this.userReservedSeat = userReservedSeat;
 }
 
 
