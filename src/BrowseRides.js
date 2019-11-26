@@ -37,19 +37,20 @@ export default class BrowseRides extends Component {
                 querySnapshot.docs.forEach(doc => {
                     var d = doc.data();
                     
-                    var riders = d.inCar
-                    var isRider = false
+                    var inCar = d.inCar
+                    var isInCar = false
 
-                    if (riders === undefined) {
-                        console.warn("BrowseRides warning: riders variable is undefined, so adding riders to it may fail. Document ID: " + doc.id)
+                    if (inCar === undefined) {
+                        console.warn("BrowseRides warning: 'inCar' variable is undefined, so adding riders to it may fail." +
+                            "This might mean that the document in the database wasn't initialized with an inCar entry. Document ID: " + doc.id)
                     } else {
-                        riders.forEach(uid => {
+                        inCar.forEach(uid => {
                             if (uid === firebaseApp.auth().currentUser.uid)
-                                isRider = true
+                                isInCar = true
                         });
                     }
 
-                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv, isRider);
+                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv, isInCar);
                     //console.log(entry);
                     //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
                     //above link for making it check whether or not data exists already
