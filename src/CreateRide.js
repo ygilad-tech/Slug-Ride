@@ -87,7 +87,8 @@ export default class CreateRide extends Component {
                                     pickUpAddr: this.state.puAddy,
                                     pickUpTime: this.state.puTime,
                                     seatsAv: this.state.numSeats,
-                                    DriverName: this.state.DriverName
+                                    DriverName: this.state.DriverName,
+                                    inCar: [],
                                 })
                                 .then(() =>{
                                     navigate('BrowseRidesPage')
