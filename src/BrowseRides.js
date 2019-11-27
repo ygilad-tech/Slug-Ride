@@ -12,16 +12,6 @@ import {
 import PropTypes from 'prop-types'
 import { db } from './firebase';
 
-
-
-// List of example rides to be displayed for testing.
-// The data attribute of FlatList is what receives this list
-const EXAMPLE_RIDES = [
-    new RideEntryData("Bob Newbie", "6YAY616", "616 California St", "11:00", "4"),
-    new RideEntryData("First Last", "1ABC234", "999 Address St", "12:00", "2"),
-    new RideEntryData("Stoner Dude", "69NICE4", "Blaze It St", "4:20", "5"),
-]
-
 export default class BrowseRides extends Component {
     constructor(props) {
         super(props);
@@ -36,7 +26,7 @@ export default class BrowseRides extends Component {
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
                     d = doc.data();
-                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickupTime, d.seatsAv);
+                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv);
                     //console.log(entry);
                     //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
                     //above link for making it check whether or not data exists already
@@ -89,6 +79,14 @@ export default class BrowseRides extends Component {
                         title="Create Ride"
                         onPress={() => navigate('CreateRidePage')}
                     />
+                    <Button
+                        title="View Profile"
+                        onPress={() =>navigate('ProfilePage')}
+                    />
+                    <Button
+                        title="Create Profile!"
+                        onPress={() =>navigate('CreateProfile')}
+                    />
                 </View>
 
             </View>
@@ -119,7 +117,7 @@ class RideEntry extends Component {
 
     onPress = () => {
         // This occurs when a user taps a specific ride
-        var msg = "Signed up for " + this.props.name + "'s ride"
+        var msg = "Signed up for " + this.props.DriverName + "'s ride"
         Alert.alert(msg)  
     }
 
