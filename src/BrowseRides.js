@@ -13,7 +13,6 @@ import PropTypes from 'prop-types'
 import { db, firebaseApp } from './firebase';
 
 
-
 // List of example rides to be displayed for testing.
 // The data attribute of FlatList is what receives this list
 const EXAMPLE_RIDES = [
@@ -50,7 +49,7 @@ export default class BrowseRides extends Component {
                         });
                     }
 
-                    entry = new RideEntryData(d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv, isInCar);
+                    entry = new RideEntryData(doc.id, d.DriverName, d.plateNum, d.pickUpAddr, d.pickUpTime, d.seatsAv, isInCar);
                     //console.log(entry);
                     //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
                     //above link for making it check whether or not data exists already
@@ -64,11 +63,76 @@ export default class BrowseRides extends Component {
                     //console.log(markers.length);
                     });
             });
+
             return;
         }
 
-    userTappedRide(rideUID) {
-        
+    async userUpdatesRide(rideID) {
+        // This function is called to update a user's status with regard to a specific ride.
+        // It should be called when a user taps a ride, either to sign up or un-sign up for it.
+
+        /*
+        var localRideStatus = null
+        this.state.rides.forEach(ride => {
+            if (ride.rideID === rideID)
+                localRideStatus = ride.isInCar
+        });
+        */
+
+        var localRideStatus = false
+
+        await db.collection('RidesList').get()
+       .then(querySnapshot => {
+            querySnapshot.docs.forEach(doc => {
+                var d = doc.data();
+               
+                var inCar = d.inCar
+
+                if (inCar === undefined) {
+                    console.warn("BrowseRides warning: 'inCar' variable is undefined, so adding riders to it may fail." +
+                        "This might mean that the document in the database wasn't initialized with an inCar entry. Document ID: " + doc.id)
+                } else {
+                    inCar.forEach(uid => {
+                        if (uid === firebaseApp.auth().currentUser.uid)
+                            localRideStatus = true
+                    });
+                }
+            });
+        });
+
+        if (localRideStatus !== null) {
+
+            let rideRef = db.collection('RideList').doc(rideID)
+            
+            if (localRideStatus === true) {
+                let updateSingle = rideRef.update({
+                    inCar: db.FieldValue.arrayRemove(firebaseApp.auth().currentUser.uid)
+                },
+                function(error) {
+                    if (error) {
+                        // Failed to update the database entry
+                        Alert.alert("Error signing up for ride: " + error);
+                    } else {
+                        //Successfully updated the database, now refresh the local cache
+                        this.getFireData()
+                    }
+                });
+            } else if (localRideStatus === false) {
+                console.log("Adding user to ride " + rideID)
+                let updateSingle = rideRef.update({
+                    inCar: db.FieldValue.arrayUnion(firebaseApp.auth().currentUser.uid)
+                },
+                function(error) {
+                    if (error) {
+                        // Failed to update the database entry
+                        Alert.alert("Error signing up for ride: " + error);
+                    } else {
+                        //Successfully updated the database, now refresh the local cache
+                        this.getFireData()
+                    }
+                });
+            }
+        }
     }
 
     render() {
@@ -90,13 +154,14 @@ export default class BrowseRides extends Component {
                         data={this.state.rides}
                         renderItem={({item}) => 
                             <RideEntry
-                                rideUID={item.rideUID}
+                                rideID={item.rideID}
                                 DriverName={item.DriverName}
                                 plateNum={item.plateNum} 
                                 pickUpAddr={item.pickUpAddr}  
                                 pickUpTime={item.pickUpTime}
                                 seatsAv={Number(item.seatsAv)}
                                 initialCarState={item.isInCar} // this is subject to change
+                                updateRideFunc={this.userUpdatesRide}
                             /> }
                         keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
                         ListEmptyComponent={
@@ -122,8 +187,8 @@ export default class BrowseRides extends Component {
  * passed to a RideEntry component to be displayed in the list. We'll 
  * probably get this info from the database, I imagine.
 */
-function RideEntryData(rideUID, DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv, isInCar) {
-    this.rideUID = rideUID;
+function RideEntryData(rideID, DriverName, plateNum, pickUpAddr, pickUpTime, seatsAv, isInCar) {
+    this.rideID = rideID;
     this.DriverName = DriverName;
     this.plateNum = plateNum;
     this.pickUpAddr = pickUpAddr;
@@ -148,6 +213,9 @@ class RideEntry extends Component {
 
     onPress = () => {
         // This occurs when a user taps a specific ride
+
+        // TODO: Account for failure states. Also this whole structure sucks.
+        this.props.updateRideFunc(this.props.rideID)
 
         var msg
         if (this.state.isInCar){
