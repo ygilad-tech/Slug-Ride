@@ -8,6 +8,8 @@ import {
 } from 'react-native';
 import { Container, Item, Form, Input, Button, Label} from "native-base";
 import {firebaseApp } from './firebase';
+import { db } from './firebase';
+
 /*
 import * as firebase from 'firebase';
 
@@ -45,6 +47,7 @@ export default class LoginPage extends Component {
       firebaseApp.auth().onAuthStateChanged(user => {
          alert("Account Created!");
       })
+      navigate('CreateProfile')
    } catch (error) {
       console.log(error.toString(error));
     }
@@ -72,7 +75,7 @@ export default class LoginPage extends Component {
 		    <Form>
 		      <Item floatingLabel>
 		        <Label>Email</Label>
-		        <Input autoCapitalize="none" autoCorrect={false} 
+		        <Input autoCapitalize="none" autoCorrect={false}
 		        onChangeText={(email) => this.setState({email})}/>
 		      </Item>
 		      <Item floatingLabel>

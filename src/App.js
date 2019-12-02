@@ -11,11 +11,14 @@ import {
 
 import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {firebaseApp } from './firebase';
 
 import LoginPage from './LoginPage';
 import CreateAccPage from './CreateAccPage';
 import BrowseRides from './BrowseRides';
 import CreateRide from './CreateRide';
+import CreateProfile from './CreateProfile';
+import ProfilePage from './ProfilePage';
 
 // TODO: Figure out how to center the buttons on the screen itself
 class FirstPage extends Component {
@@ -49,6 +52,8 @@ const MainNavigator = createStackNavigator({
   CreateAccPage: {screen: CreateAccPage},
   BrowseRidesPage: {screen: BrowseRides},
   CreateRidePage: {screen: CreateRide},
+  CreateProfile: {screen: CreateProfile},
+  ProfilePage: {screen: ProfilePage},
 });
 
 const App = createAppContainer(MainNavigator);
