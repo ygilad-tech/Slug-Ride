@@ -71,68 +71,44 @@ export default class BrowseRides extends Component {
         // This function is called to update a user's status with regard to a specific ride.
         // It should be called when a user taps a ride, either to sign up or un-sign up for it.
 
-        /*
-        var localRideStatus = null
-        this.state.rides.forEach(ride => {
-            if (ride.rideID === rideID)
-                localRideStatus = ride.isInCar
-        });
-        */
-
-        var localRideStatus = false
-
-        await db.collection('RidesList').get()
-       .then(querySnapshot => {
-            querySnapshot.docs.forEach(doc => {
-                var d = doc.data();
-               
-                var inCar = d.inCar
-
-                if (inCar === undefined) {
-                    console.warn("BrowseRides warning: 'inCar' variable is undefined, so adding riders to it may fail." +
-                        "This might mean that the document in the database wasn't initialized with an inCar entry. Document ID: " + doc.id)
+        await db.collection('RidesList').doc(rideID).get()
+            .then(doc => {
+                if (!doc.exists) {
+                    console.warn("Warning: no such document exists")
                 } else {
-                    inCar.forEach(uid => {
-                        if (uid === firebaseApp.auth().currentUser.uid)
-                            localRideStatus = true
-                    });
+                    var d = doc.data()
+                    var inCar = d.inCar
+                    var isInCar = false
+
+                    if (inCar === undefined) {
+                        console.warn("BrowseRides warning: 'inCar' variable is undefined, so adding riders to it may fail." +
+                            "This might mean that the document in the database wasn't initialized with an inCar entry. Document ID: " + doc.id)
+                    } else {
+                        var index
+                        inCar.forEach((userID, i) => { // should this await?
+                            if (userID === firebaseApp.auth().currentUser.uid) {
+                                isInCar = true
+                                index = i
+                            }
+                        });
+
+                        var newInCar = inCar
+                        if (isInCar) {
+                            var newInCar = inCar
+                            newInCar.splice(index, 1)
+                        } else {
+                            var newInCar = inCar
+                            newInCar.push(firebaseApp.auth().currentUser.uid)
+                        }
+                    
+                        db.collection('RidesList').doc(rideID).update({
+                            "inCar": newInCar
+                        })
+                    }                    
                 }
             });
-        });
 
-        if (localRideStatus !== null) {
 
-            let rideRef = db.collection('RideList').doc(rideID)
-            
-            if (localRideStatus === true) {
-                let updateSingle = rideRef.update({
-                    inCar: db.FieldValue.arrayRemove(firebaseApp.auth().currentUser.uid)
-                },
-                function(error) {
-                    if (error) {
-                        // Failed to update the database entry
-                        Alert.alert("Error signing up for ride: " + error);
-                    } else {
-                        //Successfully updated the database, now refresh the local cache
-                        this.getFireData()
-                    }
-                });
-            } else if (localRideStatus === false) {
-                console.log("Adding user to ride " + rideID)
-                let updateSingle = rideRef.update({
-                    inCar: db.FieldValue.arrayUnion(firebaseApp.auth().currentUser.uid)
-                },
-                function(error) {
-                    if (error) {
-                        // Failed to update the database entry
-                        Alert.alert("Error signing up for ride: " + error);
-                    } else {
-                        //Successfully updated the database, now refresh the local cache
-                        this.getFireData()
-                    }
-                });
-            }
-        }
     }
 
     render() {
