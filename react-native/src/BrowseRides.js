@@ -227,6 +227,7 @@ class RideEntry extends Component {
         super(props);
         this.state = {
             isInCar: this.props.initialCarState,
+            num: 0,
         };
     }
 
@@ -235,17 +236,49 @@ class RideEntry extends Component {
 
         // TODO: Account for failure states. Also this whole structure sucks.
         this.props.updateRideFunc(this.props.rideID)
-        // await db.collection('Profiles').doc(this.props.DriverName).get()
-        //     .then(doc => {
-        //         var d = doc.data
-        //         var num = d.phone
-        //     }
+        let ridesRef = db.collection('RidesList').doc(this.props.rideID);
+        let getDoc = ridesRef.get()
+          .then(doc => {
+            if (!doc.exists) {
+              console.log('No such document!');
+            } else {
+              //console.log('Document data:', doc.data());
+              var d  = doc.data()
+              let usr = d.inCar[0]
+              //console.log('Document data:', usr);
+              let profileRef = db.collection('Profiles');
+              let profileDoc = profileRef.where('usr', '==', usr).get()
+              .then(snapshot => {
+                if (snapshot.empty) {
+                  console.log('No matching documents.');
+                  return;
+                }  
 
+                snapshot.forEach(doc => {
+                  var profD= doc.data();
+                  this.setState({
+                    num : profD.phoneNum
+                  })
+                  console.log(doc.id, '=>', this.state.num);
+                });
+              })
+              .catch(err => {
+                console.log('Error getting documents', err);
+              });
+
+
+            }
+          })
+          .catch(err => {
+            console.log('Error getting document', err);
+          });
+
+        num = 7
         var msg
         if (this.state.isInCar){
             msg = "You are no longer singed up for " + this.props.DriverName + "'s ride"
         } else{
-            msg = "Signed up for " + this.props.DriverName + "'s ride, and their phone number is: " 
+            msg = "Signed up for " + this.props.DriverName + "'s ride, and their phone number is: " + this.state.num
 
         }
 
