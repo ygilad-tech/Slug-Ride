@@ -33,11 +33,8 @@ export default class CreateProfile extends Component {
 
     render() {
         const {navigate} = this.props.navigation
-        const user_ = firebaseApp.auth().currentUser;
-        if (user_){
-            this.state.usr = user_.uid;
-        }
-        const idToDoc = this.state.usr + "P";
+        const user = firebaseApp.auth().currentUser;
+        this.state.usr = user.uid;
         //this.state.user = user_;
         return (
             <View style={{flex: 1}}>
@@ -117,7 +114,7 @@ export default class CreateProfile extends Component {
                     <Button
                         title="Finish Profile"
                         onPress={() => {
-                                db.collection('Profiles').doc(idToDoc).set({
+                                db.collection('Profiles').doc(this.state.usr + "P").set({
                                     firstName: this.state.firstName,
                                     lastName: this.state.lastName,
                                     phoneNum: this.state.phoneNum,
