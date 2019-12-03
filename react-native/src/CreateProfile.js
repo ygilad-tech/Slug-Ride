@@ -37,6 +37,7 @@ export default class CreateProfile extends Component {
         if (user_){
             this.state.usr = user_.uid;
         }
+        const idToDoc = this.state.usr + "P";
         //this.state.user = user_;
         return (
             <View style={{flex: 1}}>
@@ -116,7 +117,7 @@ export default class CreateProfile extends Component {
                     <Button
                         title="Finish Profile"
                         onPress={() => {
-                                db.collection('Profiles').doc().set({
+                                db.collection('Profiles').doc(idToDoc).set({
                                     firstName: this.state.firstName,
                                     lastName: this.state.lastName,
                                     phoneNum: this.state.phoneNum,
