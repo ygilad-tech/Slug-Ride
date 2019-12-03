@@ -60,11 +60,33 @@ export default class BrowseRides extends Component {
                     //console.log(entry);
                     //https://stackoverflow.com/questions/51000169/how-to-check-a-certain-data-already-exists-in-firestore-or-not
                     //above link for making it check whether or not data exists already
+                    var rideExist = false;
+                    for (i = 0; i < this.state.rides.length; i++){
+                        if (this.state.rides[i].DriverName == d.DriverName){
+                            rideExist = true;
+                            if (this.state.rides[i].seatsAv != d.seatsAv){
+                                this.state.rides[i].seatsAv = d.seatsAv;
+                            }
+                            break;
+                        }
+                    }
+                    if (!rideExist){
+                        this.setState({
+                            rides: [...this.state.rides, entry]
+                        });
+                    }
+
+                    /*
                     if (!this.state.rides.some(r => r.DriverName == d.DriverName)) {
                         this.setState({
                             rides: [...this.state.rides, entry]
                         });
                     }
+                    else if (this.state.rides.some(r => r.DriverName == d.DriverName && r.seatsAv != d.seatsAv)) {
+                        d.seatsAv = this.state.rides.r.seatsAv
+                    }
+                    */
+
                     
                     //markers.concat(entry);
                     //console.log(markers.length);
@@ -86,6 +108,7 @@ export default class BrowseRides extends Component {
                     var d = doc.data()
                     var inCar = d.inCar
                     var isInCar = false
+                    var seatsAv = Number(d.seatsAv)
 
                     if (inCar === undefined) {
                         console.warn("BrowseRides warning: 'inCar' variable is undefined, so adding riders to it may fail." +
@@ -102,14 +125,17 @@ export default class BrowseRides extends Component {
                         var newInCar = inCar
                         if (isInCar) {
                             var newInCar = inCar
+                            seatsAv = seatsAv + 1
                             newInCar.splice(index, 1)
                         } else {
+                            seatsAv = seatsAv-1
                             var newInCar = inCar
                             newInCar.push(firebaseApp.auth().currentUser.uid)
                         }
                     
                         db.collection('RidesList').doc(rideID).update({
-                            "inCar": newInCar
+                            "inCar": newInCar,
+                            "seatsAv": seatsAv
                         })
                     }                    
                 }
@@ -209,12 +235,18 @@ class RideEntry extends Component {
 
         // TODO: Account for failure states. Also this whole structure sucks.
         this.props.updateRideFunc(this.props.rideID)
+        // await db.collection('Profiles').doc(this.props.DriverName).get()
+        //     .then(doc => {
+        //         var d = doc.data
+        //         var num = d.phone
+        //     }
 
         var msg
         if (this.state.isInCar){
             msg = "You are no longer singed up for " + this.props.DriverName + "'s ride"
         } else{
-            msg = "Signed up for " + this.props.DriverName + "'s ride"
+            msg = "Signed up for " + this.props.DriverName + "'s ride, and their phone number is: " 
+
         }
 
         this.setState((prevState) => ({
