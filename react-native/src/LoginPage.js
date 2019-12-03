@@ -47,7 +47,6 @@ export default class LoginPage extends Component {
       firebaseApp.auth().onAuthStateChanged(user => {
          alert("Account Created!");
       })
-      navigate('CreateProfile')
    } catch (error) {
       console.log(error.toString(error));
     }
@@ -93,12 +92,6 @@ export default class LoginPage extends Component {
             this.SignIn(this.state.email, this.state.pass)
           }}>
 		        <Text>Sign In</Text>
-		      </Button>
-		      <Button full rounded 
-		      style={{ marginTop: 20 }}
-		      onPress={() => result = this.SignUp(this.state.email,
-		      this.state.pass)}>
-		        <Text>Sign Up</Text>
 		      </Button>
 		    </Form>
 		  </Container>
