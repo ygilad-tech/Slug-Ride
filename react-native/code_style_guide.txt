@@ -2,6 +2,6 @@ Whitespace:
     - 4 spaces per indent
 
 Names:
-    - Camel case for variable and function names
-    - Classes have every word in their name capitalized
+    - Camel case for variable, function, and prop names
+    - Classes have every first letter in each word in their name capitalized
     - Constants should be all-caps with underscores separating the words if necessary
