@@ -26,11 +26,18 @@ export default class BrowseRides extends Component {
         super(props);
         this.state = {
             rides: [],
+            isLoading: false,
         };
+    }
+
+
+    componentDidMount(){
+        this.getFireData()
     }
 
     async getFireData (){
         const markers = [];
+        this.setState({isLoading:true})
         await db.collection('RidesList').get()
             .then(querySnapshot => {
                 querySnapshot.docs.forEach(doc => {
@@ -62,7 +69,7 @@ export default class BrowseRides extends Component {
                     //markers.concat(entry);
                     //console.log(markers.length);
                     });
-            });
+            }).finally(()=> this.setState({isLoading:false}));
 
             return;
         }
@@ -113,7 +120,7 @@ export default class BrowseRides extends Component {
 
     render() {
         var elems = [];
-        this.getFireData();
+        //this.getFireData();
         //console.log(elems[0]);
 
         const {navigate} = this.props.navigation;
@@ -139,6 +146,8 @@ export default class BrowseRides extends Component {
                                 initialCarState={item.isInCar} // this is subject to change
                                 updateRideFunc={this.userUpdatesRide}
                             /> }
+                        refreshing={this.state.isLoading}
+                        onRefresh={()=> this.getFireData()}
                         keyExtractor={(item, index) => index.toString()} // Temporary sloppy fix using the index as a key
                         ListEmptyComponent={
                             <Text style={{alignItems: 'center', justifyContent: 'center', padding: 10, fontSize: 15}} >No Rides Available</Text>
