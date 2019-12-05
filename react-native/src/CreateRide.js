@@ -8,6 +8,7 @@ import {
     Alert,
 } from 'react-native';
 import { NavigationEvents } from 'react-navigation';
+import {firebaseApp } from './firebase';
 import {db } from './firebase';
 
 
@@ -88,7 +89,7 @@ export default class CreateRide extends Component {
                                     pickUpTime: this.state.puTime,
                                     seatsAv: this.state.numSeats,
                                     DriverName: this.state.DriverName,
-                                    inCar: [],
+                                    inCar: [firebaseApp.auth().currentUser.uid],
                                 })
                                 .then(() =>{
                                     navigate('BrowseRidesPage')

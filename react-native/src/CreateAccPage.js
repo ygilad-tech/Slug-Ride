@@ -2,64 +2,109 @@ import React, { Component } from 'react';
 import {
     View,
     Text,
-    Button,
+    StyleSheet,
     TextInput,
     Alert,
 } from 'react-native';
+import { Container, Item, Form, Input, Button, Label} from "native-base";
+import {firebaseApp } from './firebase';
+import { db } from './firebase';
 
-import App from './App';
+/*
+import * as firebase from 'firebase';
 
-export default class CreateAccPage extends Component {
+var config = {
+  apiKey: "AIzaSyAKQst4A-9FrvXDz2IPSnWyufX5iehZcoc",
+  authDomain: "slugride-ff4c3.firebaseapp.com",
+  databaseURL: "https://slugride-ff4c3.firebaseio.com",
+  projectId: "slugride-ff4c3",
+  storageBucket: "slugride-ff4c3.appspot.com",
+  messagingSenderId: "481232900808",
+  appId: "1:481232900808:web:dfcecda79bc9dc93598bfd",
+  measurementId: "G-9C8ZTKRHX9"
+};
+
+firebase.initializeApp(config);
+*/
+
+
+export default class LoginPage extends Component {
 
 	constructor(props) {
     	super(props);
     	this.state = {
     		email: '',
-    		pass1: '',
-    		pass2: '',
+    		pass: '',
     	};
 	}
-
-    render() {
-		const {navigate} = this.props.navigation; /* Allows navigation to other screens */
-        return (
-
-        	<View style={{padding: 10}}>
-	            	<TextInput 
-						style = {{height: 20, paddingVertical: 0}}
-						underlineColorAndroid = "transparent"
-	            		placeholder = "Enter your UCSC email here"
-	            		onChangeText={(email) => this.setState({email})}
-	          			value={this.state.email}
-	            	/>
-
-	            	<TextInput 
-						style = {{height: 20, paddingVertical: 0}}
-						underlineColorAndroid = "transparent"
-	            		placeholder = "Enter your password here"
-	            		onChangeText={(pass1) => this.setState({pass1})}
-	          			value={this.state.pass1}
-	            	/>
-
-	            	<TextInput 
-						style = {{height: 20, paddingVertical: 0}}
-						underlineColorAndroid = "transparent"
-	            		placeholder = "Enter your password again"
-	            		onChangeText={(pass2) => this.setState({pass2})}
-	          			value={this.state.pass2}
-	            	/>
-
-	            	<Button 
-	            		title = "Create Account"
-	            		onPress={() => navigate('BrowseRidesPage')}
-	            	/>
-            </View>
-
-
-
-            //<View style={{alignItems: 'center', top: 50}}>
-            //    <Text>Create an account!</Text>
-            //</View>
-        );
+  SignUp = (email, pass) => {
+    if (!email.endsWith(".edu")){
+      alert("use your .edu email!");
+      return;
     }
+    try {
+      firebaseApp.auth().createUserWithEmailAndPassword(email, pass);
+      firebaseApp.auth().onAuthStateChanged(user => {
+         alert("Account Created!");
+      })
+      const {navigate} = this.props.navigation;
+      navigate('CreateProfile')
+   } catch (error) {
+      console.log(error.toString(error));
+    }
+  };
+  SignIn = (email, pass) => {
+      firebaseApp.auth().signInWithEmailAndPassword(email, pass)
+        .then( user => { 
+          const {navigate} = this.props.navigation;
+          navigate('BrowseRidesPage')
+        }).catch(error => {
+          var errorCode = error.code
+          var errorMessage = error.message
+          if (errorCode === 'auth/wrong-password')
+            alert('Incorrect password')
+          else
+            alert(errorMessage)
+        });
+      //firebase.auth().onAuthStateChanged(user => {
+      //   alert("Hello " + user.email);
+      //})
+  };
+	render() {
+		return (
+		  <Container style={styles.container}>
+		    <Form>
+		      <Item floatingLabel>
+		        <Label>Email</Label>
+		        <Input autoCapitalize="none" autoCorrect={false}
+		        onChangeText={(email) => this.setState({email})}/>
+		      </Item>
+		      <Item floatingLabel>
+		        <Label>Password</Label>
+		        <Input
+		          secureTextEntry={true}
+		          autoCapitalize="none"
+		          autoCorrect={false}
+		          onChangeText={(pass) => this.setState({pass})}
+		        />
+		      </Item>
+		      <Button full rounded 
+		      style={{ marginTop: 20 }}
+		      onPress={() => result = this.SignUp(this.state.email,
+		      this.state.pass)}>
+		        <Text>Sign Up</Text>
+		      </Button>
+		    </Form>
+		  </Container>
+		);
+  	}
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    // alignItems: "center",
+    justifyContent: "center"
+  }
+});
+

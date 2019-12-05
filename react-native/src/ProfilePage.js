@@ -26,57 +26,58 @@ export default class ProfilePage extends Component {
 
     async getUserData(){
       const user = firebaseApp.auth().currentUser;
-      var userID = user.uid + "";
-        await db.collection('Profiles').get()
-          .then(querySnapshot => {
-              querySnapshot.docs.forEach(doc => {
-                  d = doc.data();
-                  var checkID = d.usr + "";
 
-                  if (userID == checkID) {
-                      this.setState({
-                        firstName : d.firstName,
-                        lastName : d.lastName,
-                        phoneNum : d.phoneNum,
-                        email : d.email,
-                        driver : d.driver,
-                        plates : d.plates,                        
-                      });
-                  }
+      var profRef = db.collection('Profiles');
+
+      let profDoc = profRef.where('usr', '==', user.uid).get()
+        .then(snapshot => {
+          if (snapshot.empty) {
+            Alert.alert("no profile doc");
+            return;
+          }
+          snapshot.forEach(doc => {
+             var d = doc.data();
+             this.setState({
+               firstName : d.firstName,
+               lastName : d.lastName,
+               phoneNum : d.phoneNum,
+               email : d.email,
+               driver : d.driver,
+               plates : d.plates,
               });
+          });
         })
-        .catch(function(error){
-          Alert.alert("yuval sucks");
+        .catch(function(error) {
+          Alert.alert("error getting doc");
         });
-        return;
-      /*
-      const user = firebaseApp.auth().currentUser;
-      if (user){
-         var prof = db.collection('Profiles').where("email", "==", user.email)
-            .get()
-            .then(function(querySnapshot) {
-               querySnapshot.forEach(function(doc) {
-                  if (doc.exists){
-                     d = doc.data();
-                     this.state.firstName = d.firstName;
-                     this.state.lastName = d.lastName;
-                     this.state.phoneNum = d.phoneNum;
-                     this.state.email = d.email;
-                     this.state.driver = d.driver;
-                     this.state.plates = d.plates;
-                  }
-                });
-            })
-            .catch(function(error) {
-               Alert.alert('user profile not found');
-            });
-      }
-      else{
-         Alert.alert('user profile not found');
-      }
-      */
-    }
 
+        return;
+      }
+/*
+      var profRef =  db.collection('Profiles').doc(user.uid + "P");
+
+      profRef.get().then(function(doc) {
+        d = doc.data();
+         if (doc.exists) {
+            this.setState({
+               firstName : d.firstName,
+               lastName : d.lastName,
+               phoneNum : d.phoneNum,
+               email : d.email,
+               driver : d.driver,
+               plates : d.plates,   
+            });
+         }
+         else{
+            Alert.alert("no profile doc");
+         }
+      })
+      .catch(function(error){
+         Alert.alert("error getting doc");
+      });
+        return;
+    }
+*/
 
    render() {
       const {navigate} = this.props.navigation;
@@ -100,13 +101,16 @@ export default class ProfilePage extends Component {
 
           <View style={styles.bottom}>
               <Button
-                title="Browse Rides"
-                onPress={() => navigate('BrowseRides')}
-              />
+                onPress={() => navigate('BrowseRidesPage')}
+              >
+              <Text> Browse Rides </Text>
+              </Button>
+
               <Button
-                title="Edit profile"
                 onPress={() => navigate('CreateProfile')}
-              />
+              >
+              <Text> Edit Profile </Text>
+              </Button>
           </View>
         </View>
        );
