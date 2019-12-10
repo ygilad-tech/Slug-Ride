@@ -128,9 +128,14 @@ export default class BrowseRides extends Component {
                             seatsAv = seatsAv + 1
                             newInCar.splice(index, 1)
                         } else {
-                            seatsAv = seatsAv-1
-                            var newInCar = inCar
-                            newInCar.push(firebaseApp.auth().currentUser.uid)
+                            if (seatsAv == 0){
+                                Alert.alert("All seats have been filled!")
+                            }
+                            else{
+                                seatsAv = seatsAv-1
+                                var newInCar = inCar
+                                newInCar.push(firebaseApp.auth().currentUser.uid)
+                            }
                         }
                     
                         db.collection('RidesList').doc(rideID).update({
