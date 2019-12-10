@@ -42,6 +42,10 @@ export default class LoginPage extends Component {
             alert("use your .edu email!");
             return;
         }
+        if (pass == ''){
+            alert("invalid password");
+            return;
+        }
         try {
             firebaseApp.auth().createUserWithEmailAndPassword(email, pass);
             firebaseApp.auth().onAuthStateChanged(user => {
