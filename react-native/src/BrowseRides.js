@@ -240,59 +240,63 @@ class RideEntry extends Component {
         // This occurs when a user taps a specific ride
 
         // TODO: Account for failure states. Also this whole structure sucks.
+        
+        var oldSeats = this.props.seatsAv;
         this.props.updateRideFunc(this.props.rideID)
-        let ridesRef = db.collection('RidesList').doc(this.props.rideID);
-        let getDoc = ridesRef.get()
-          .then(doc => {
-            if (!doc.exists) {
-              console.log('No such document!');
-            } else {
-              //console.log('Document data:', doc.data());
-              var d  = doc.data()
-              let usr = d.inCar[0]
-              //console.log('Document data:', usr);
-              let profileRef = db.collection('Profiles');
-              let profileDoc = profileRef.where('usr', '==', usr).get()
-              .then(snapshot => {
-                if (snapshot.empty) {
-                  console.log('No matching documents.');
-                  return;
-                }  
+        if (oldSeats != this.props.seatsAv){
+            let ridesRef = db.collection('RidesList').doc(this.props.rideID);
+            let getDoc = ridesRef.get()
+              .then(doc => {
+                if (!doc.exists) {
+                  console.log('No such document!');
+                } else {
+                  //console.log('Document data:', doc.data());
+                  var d  = doc.data()
+                  let usr = d.inCar[0]
+                  //console.log('Document data:', usr);
+                  let profileRef = db.collection('Profiles');
+                  let profileDoc = profileRef.where('usr', '==', usr).get()
+                  .then(snapshot => {
+                    if (snapshot.empty) {
+                      console.log('No matching documents.');
+                      return;
+                    }  
 
-                snapshot.forEach(doc => {
-                  var profD= doc.data();
-                  this.setState({
-                    num : profD.phoneNum
+                    snapshot.forEach(doc => {
+                      var profD= doc.data();
+                      this.setState({
+                        num : profD.phoneNum
+                      })
+                      console.log(doc.id, '=>', this.state.num);
+                    });
                   })
-                  console.log(doc.id, '=>', this.state.num);
-                });
+                  .catch(err => {
+                    console.log('Error getting documents', err);
+                  });
+
+
+                }
               })
               .catch(err => {
-                console.log('Error getting documents', err);
+                console.log('Error getting document', err);
               });
 
+            num = 7
+            var msg
+            if (this.state.isInCar){
+                msg = "You are no longer singed up for " + this.props.DriverName + "'s ride"
+            } else{
+                msg = "Signed up for " + this.props.DriverName + "'s ride, and their phone number is: " + this.state.num
 
             }
-          })
-          .catch(err => {
-            console.log('Error getting document', err);
-          });
 
-        num = 7
-        var msg
-        if (this.state.isInCar){
-            msg = "You are no longer singed up for " + this.props.DriverName + "'s ride"
-        } else{
-            msg = "Signed up for " + this.props.DriverName + "'s ride, and their phone number is: " + this.state.num
+            this.setState((prevState) => ({
+                    isInCar: !prevState.isInCar,
+                })
+            );
 
+            Alert.alert(msg)
         }
-
-        this.setState((prevState) => ({
-                isInCar: !prevState.isInCar,
-            })
-        );
-
-        Alert.alert(msg)  
     }
 
     render() {
