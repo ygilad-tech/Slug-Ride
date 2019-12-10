@@ -196,7 +196,7 @@ export default class BrowseRides extends Component {
                         onPress={() =>navigate('ProfilePage')}
                     />
                     <Button
-                        title="Create Profile!"
+                        title="Edit Profile"
                         onPress={() =>navigate('CreateProfile')}
                     />
                 </View>

@@ -100,7 +100,7 @@ export default class ProfilePage extends Component {
                 </View>
 
                 <View style={styles.bottom}>
-                    <Button
+                    <Button style={{marginBottom: 7}}
                         onPress={() => navigate('BrowseRidesPage')}
                     >
                         <Text> Browse Rides </Text>
