@@ -48,6 +48,8 @@ This should install the cocoapods dependencies.
 
 -----
 
+### Build the app
+
 Once the installation is complete, you can build the app easily. `cd` into the `react-native` directory, and type:
 
 ```react-native start```
