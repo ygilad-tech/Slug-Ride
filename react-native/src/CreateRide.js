@@ -26,8 +26,36 @@ export default class CreateRide extends Component {
         };
     }
 
+    async getUserData() {
+        const user = firebaseApp.auth().currentUser;
+
+        var profRef = db.collection('Profiles');
+
+        let profDoc = profRef.where('usr', '==', user.uid).get()
+            .then(snapshot => {
+                if (snapshot.empty) {
+                    return;
+                }
+                snapshot.forEach(doc => {
+                    var d = doc.data();
+                    this.setState({
+                        DriverName: d.firstName + " " + d.lastName,
+                    });
+                });
+            })
+            .catch(function (error) {
+                
+            });
+
+        return;
+    }
+
     render() {
         const {navigate} = this.props.navigation
+        const user = firebaseApp.auth().currentUser;
+        this.getUserData();
+        var dName = this.state.DriverName;
+
         return (
             <View style={{flex: 1}}>
                 <View style={{alignItems: 'center', padding: 10}}>
@@ -40,7 +68,7 @@ export default class CreateRide extends Component {
                         <TextInput
                             style={styles.textInputStyle}
                             underlineColorAndroid = "transparent"
-                            placeholder = "Enter name Here"
+                            placeholder = 'dname'
                             onChangeText={(DriverName) =>  this.setState({DriverName})}
                             value = {this.state.DriverName}
                         />

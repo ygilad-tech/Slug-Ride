@@ -45,7 +45,7 @@ export default class LoginPage extends Component {
         try {
             firebaseApp.auth().createUserWithEmailAndPassword(email, pass);
             firebaseApp.auth().onAuthStateChanged(user => {
-                alert("Account Created!");
+                //alert("Account Created!");
             })
             const { navigate } = this.props.navigation;
             navigate('CreateProfile')
