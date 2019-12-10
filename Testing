@@ -7,7 +7,7 @@ A. User story 1 from sprint 1: As a user I want to create an account so that I c
 B. User story 2 from sprint 1: As a registered user I want to view a list showing all potential rides I can join
 more information about toilets of interest.
 Scenario:
-1. start Toilet app; select ‘Sign Up’; type
+1. start SlugRide app; select ‘Sign Up’; type
 • email = <jd@gmail.com>
 • password = <test123>
 • Hit Sign Up
@@ -19,7 +19,7 @@ A. User story 2 from sprint 2: As a user I want to create a Ride so that I can g
 B. User story 3 from sprint 2: As a Rider I want to be able to select a ride to join
 more information about toilets of interest.
 Scenario:
-1. start Toilet app; select ‘Create Ride’; type
+1. start SlugRide app; select ‘Create Ride’; type
 • Name = <John Doe>
 • Address = <123 Test St>
 • Seats Available= <4>
@@ -30,18 +30,15 @@ Scenario:
 • Alert Created saying Ride Joined
 • Seats Available goes down by -1
 
-A. User story 4 from sprint 2: As a user I want to create a Ride so that I can gain potential riders
-B. User story 5 from sprint 2: As a Rider I want to be able to select a ride to join
+A. User story 4 from sprint 2: As a user I want to edit my profile so that I can change my information
 more information about toilets of interest.
 Scenario:
-1. start Toilet app; select ‘Create Ride’; type
-• Name = <John Doe>
-• Address = <123 Test St>
-• Seats Available= <4>
-• press Create Ride -> Return to Browse Rides
+1. start SlugRide app; select ‘Edit Profile’; type
+• Name = <John>
+• Last Name = <Doe>
+• Phone Number= <0001112222>
+• Email= <jd@gmail.com>
+• press Finish Profile -> Return to Your Profile
 • user should see a List of rides with his own available when refreshed
-2. As a different User, I should be able to click on a ride  to join it
-• Click on a Ride to join
-• Alert Created saying Ride Joined
-• Seats Available goes down by -1
+
 

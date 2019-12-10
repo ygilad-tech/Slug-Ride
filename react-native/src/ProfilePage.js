@@ -22,6 +22,7 @@ export default class ProfilePage extends Component {
             driver: false,
             plates: '',
         };
+        this.getUserData();
     }
 
     async getUserData() {
@@ -81,7 +82,7 @@ export default class ProfilePage extends Component {
 
     render() {
         const { navigate } = this.props.navigation;
-        this.getUserData();
+        //this.getUserData();
         //const user = firebase.auth().currentUser;
 
         return (
